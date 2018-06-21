@@ -13,6 +13,8 @@ DOCKER_CONTEXT = $(TOPDIR)/docker/context
 # TODO: hook into the real configs out of KBase's gitlab
 env = 
 
+net = kbase-dev
+
 
 # functions
 # thanks https://stackoverflow.com/questions/10858261/abort-makefile-if-variable-not-set
@@ -65,11 +67,15 @@ image: preconditions
 	@echo "> Beginning docker build..."
 	@cd $(DOCKER_CONTEXT)/../..; bash tools/build_docker_image.sh
 
+run: run-image
+
 run-image: preconditions
 	@:$(call check_defined, env, the deployment environment: dev ci next appdev prod)
-	$(eval cmd = $(TOPDIR)/tools/run-image.sh $(env))
+	@:$(call check_defined, net, the docker custom network)
+	$(eval cmd = $(TOPDIR)/tools/run-image.sh $(env) $(net))
 	@echo "> Running proxier image"
 	@echo "> with env $(env)"
+	@echo "> with net $(net)"
 	@echo "> Issuing: $(cmd)"
 	bash $(cmd)	
 

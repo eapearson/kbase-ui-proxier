@@ -10,27 +10,33 @@ if [ -z "$environment" ]; then
     exit 1
 fi
 
-if [ ! -e "tools/proxier/conf/${environment}.env" ]; then
-    echo "ERROR: environment (arg 1) does not resolve to a config file in tools/proxier/conf/${environment}.env"
+network=$2
+if [ -z "$network" ]; then
+    echo "ERROR: argument 2, 'network', not provided"
     usage
     exit 1
 fi
 
 root=$(git rev-parse --show-toplevel)
-config_mount="${root}/tools/proxier/conf"
+config_mount="${root}/conf"
 image="kbase/kbase-ui-proxier:dev"
+
+if [ ! -e "${root}/conf/${environment}.env" ]; then
+    echo "ERROR: environment (arg 1) does not resolve to a config file in ${root}/conf/${environment}.env"
+    usage
+    exit 1
+fi
+
 
 echo "CONFIG MOUNT: ${config_mount}"
 echo "ENVIRONMENT : ${environment}"
 
-echo "stdout sent to proxier.stdout, stderr sent to proxier.stderr"
 echo "Running proxier image ${image}"
 echo ":)"
 
 docker run \
   -p 80:80 -p 443:443 --dns=8.8.8.8 --rm \
   --env-file=${config_mount}/${environment}.env \
-  --network=kbase-dev \
+  --network=${network} \
   --name=proxier \
-  ${image} \
-  > temp/files/proxier.stdout
+  ${image} 
