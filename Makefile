@@ -11,7 +11,7 @@ DOCKER_CONTEXT = $(TOPDIR)/docker/context
 # Causes run-image.sh to use the file in deployment/conf/$(env).env for
 # "filling out" the nginx and ui config templates.
 # TODO: hook into the real configs out of KBase's gitlab
-env = 
+env = dev
 
 net = kbase-dev
 
@@ -40,12 +40,8 @@ good_docker_version = $(if \
 		  "Good docker version ($(DOCKER_VERSION))", \
 		  $(error "! Docker major version must be $(DOCKER_VERSION_REQUIRED), it is $(DOCKER_VERSION).") )
 
-# Standard 'all' target = just do the standard build
-all: image run-image
-
-# See above for 'all' - just running 'make' should locally build
 default: image
-
+all: image
 build: image
 
 preconditions:
@@ -67,9 +63,7 @@ image: preconditions
 	@echo "> Beginning docker build..."
 	@cd $(DOCKER_CONTEXT)/../..; bash tools/build_docker_image.sh
 
-run: run-image
-
-run-image: preconditions
+run: preconditions
 	@:$(call check_defined, env, the deployment environment: dev ci next appdev prod)
 	@:$(call check_defined, net, the docker custom network)
 	$(eval cmd = $(TOPDIR)/tools/run-image.sh $(env) $(net))
@@ -84,4 +78,4 @@ clean:
 	@echo "> Cleaning..."
 	rm -rf $(DOCKER_CONTEXT)/contents
 
-.PHONY: all test build
+.PHONY: all default test build preconditions image run clean
