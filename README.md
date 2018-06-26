@@ -13,8 +13,8 @@ make env=dev
 In steps this is:
 
 ```bash
-make build-image 
-make run-image env=dev
+make docker-image
+make run-docker-image env=dev
 ```
 
 ## Notes
