@@ -4,7 +4,7 @@ A small docker image to provide an http/https reverse proxy for the KBase deploy
 
 ## Using it
 
-The one line wonder, which builds the proxier and starts it with the dev configuration:
+The one line wonder, which builds the proxy and starts it with the dev configuration:
 
 ```bash
 make env=dev

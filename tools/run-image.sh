@@ -19,7 +19,7 @@ fi
 
 root=$(git rev-parse --show-toplevel)
 config_mount="${root}/conf"
-image="kbase/kbase-ui-proxier:dev"
+image="kbase/kbase-ui-proxy:dev"
 
 if [ ! -e "${root}/conf/${environment}.env" ]; then
     echo "ERROR: environment (arg 1) does not resolve to a config file in ${root}/conf/${environment}.env"
@@ -31,12 +31,12 @@ fi
 echo "CONFIG MOUNT: ${config_mount}"
 echo "ENVIRONMENT : ${environment}"
 
-echo "Running proxier image ${image}"
+echo "Running proxy image ${image}"
 echo ":)"
 
 docker run \
   -p 80:80 -p 443:443 --dns=8.8.8.8 --rm \
   --env-file=${config_mount}/${environment}.env \
   --network=${network} \
-  --name=proxier \
+  --name=proxy \
   ${image} 

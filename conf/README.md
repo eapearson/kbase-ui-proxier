@@ -1,3 +1,3 @@
 # Configuration files
 
-Configuration files for the Proxier development image.
+Configuration files for the Proxy development image.

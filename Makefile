@@ -1,5 +1,5 @@
 #
-# Makefile for kbase-ui-proxier
+# Makefile for kbase-ui-proxy
 #
 
 TOPDIR		   = $(PWD)
@@ -58,7 +58,7 @@ docker-image: preconditions
 	@echo "> Cleaning out old contents"
 	@rm -rf $(DOCKER_CONTEXT)/contents
 	@mkdir -p $(DOCKER_CONTEXT)/contents
-	@echo "> Copying proxier config templates..."
+	@echo "> Copying proxy config templates..."
 	@cp -pr $(DOCKER_CONTEXT)/../src/* $(DOCKER_CONTEXT)/contents
 	@echo "> Beginning docker build..."
 	@cd $(DOCKER_CONTEXT)/../..; bash tools/build_docker_image.sh
@@ -67,7 +67,7 @@ run-docker-image: preconditions
 	@:$(call check_defined, env, the deployment environment: dev ci next appdev prod)
 	@:$(call check_defined, net, the docker custom network)
 	$(eval cmd = $(TOPDIR)/tools/run-image.sh $(env) $(net))
-	@echo "> Running proxier image"
+	@echo "> Running proxy image"
 	@echo "> with env $(env)"
 	@echo "> with net $(net)"
 	@echo "> Issuing: $(cmd)"

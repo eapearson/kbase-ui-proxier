@@ -54,7 +54,7 @@ function build_image() {
     docker build --build-arg VCS_REF=$commit \
         --build-arg BRANCH=$branch \
         --build-arg TAG=$tag \
-        -t kbase/kbase-ui-proxier:$tag \
+        -t kbase/kbase-ui-proxy:$tag \
         ${root}/docker/context
 
     err=$?
@@ -62,7 +62,7 @@ function build_image() {
         echo "Error running docker build: $err"
     else
         echo "Successfully built docker image. You may invoke it "
-        echo "with tag \"kbase/kbase-ui-proxier:${tag}\""
+        echo "with tag \"kbase/kbase-ui-proxy:${tag}\""
     fi
 }
 
