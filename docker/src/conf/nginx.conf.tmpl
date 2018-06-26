@@ -34,11 +34,13 @@ http {
     keepalive 16;
   }
 
+  # hmm local narrative {{ .Env.local_narrative }}?
   upstream narrative {
-    server {{ .Env.deploy_hostname }}:443;
-    # note that you need to change the usage of the upstream server
-    # to swich between https and http as well.
-    #server narrative:8888;
+    {{ if .Env.local_narrative }}
+      server narrative:8888;
+    {{ else }}
+      server {{ .Env.deploy_hostname }}:443;
+    {{ end }}
   }
 
 	##
@@ -82,7 +84,11 @@ http {
        # Needed for running narratives
       location /narrative {
         include /etc/nginx/cors.conf;
-        proxy_pass https://narrative/narrative;
+        {{ if .Env.local_narrative }}
+          proxy_pass http://narrative/narrative;
+        {{ else }}
+          proxy_pass https://narrative/narrative;
+        {{ end }}
 
         proxy_hide_header 'Host';
 
@@ -158,7 +164,12 @@ http {
 
       # Needed for running narratives
       location /narrative {
-        proxy_pass https://narrative/narrative;
+        {{ if .Env.local_narrative }}
+          proxy_pass http://narrative/narrative;
+        {{ else }}
+          proxy_pass https://narrative/narrative;
+        {{ end }}
+        
         proxy_connect_timeout 1s;
 
         proxy_set_header Upgrade $http_upgrade;
