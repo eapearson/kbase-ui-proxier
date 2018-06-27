@@ -17,6 +17,24 @@ make docker-image
 make run-docker-image env=dev
 ```
 
+## Using with local narrative
+
+```
+local_narrative=true make run-docker-image env=dev
+```
+
+## Using with local dynamic services
+
+```
+dynamic_service_proxies="UIService" make run-docker-image env=dev
+```
+
+## Both together 
+
+```
+dynamic_service_proxies="UIService" local_narrative=true make run-docker-image env=dev
+```
+
 ## Notes
 
 Requires that at least one container already be running on the network "kbase

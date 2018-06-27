@@ -133,6 +133,21 @@ http {
       #   proxy_pass http://jgi_gateway:5000;
       # }
 
+      {{ if .Env.dynamic_service_proxies }}
+      {{ range split .Env.dynamic_service_proxies " " }}
+      # note that the elements of the list must match the service path used in the ui call,
+      # and also the hostname assigned to the docker container.
+      # SO this means that probably service entries which are more complicated than simple strings
+      #    without punctuation will work, but if they contain a / or something, maybe not.
+      location /dynamic_service_proxies/{{ . }} {
+        {{ if $.Env.deploy_ui_hostname }}
+        include /etc/nginx/cors.conf;
+        {{ end }}
+        proxy_pass http://{{ . }}:5000;
+      }
+      {{ end }}
+      {{ end }}
+
       # location /services/UIService {
       #   {{ if .Env.deploy_ui_hostname }}
       #   include /etc/nginx/cors.conf;

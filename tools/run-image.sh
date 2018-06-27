@@ -38,12 +38,17 @@ then
     options=' -e "''local_narrative=true''"'
 fi
 
+if [ -n "${dynamic_service_proxies}" ]
+then
+    options="${options}"' -e "''dynamic_service_proxies='"${dynamic_service_proxies}"'"'
+fi
 
 echo "CONFIG MOUNT: ${config_mount}"
 echo "ENVIRONMENT : ${environment}"
 
-echo "Running proxy image ${image}"
-echo "with options ${options}"
+echo "Running proxier image ${image}"
+echo "with options: ${options}"
+# echo "with dynamic service proxies: ${dynamic_service_proxies}"
 echo ":)"
 
 cmd="docker run \
