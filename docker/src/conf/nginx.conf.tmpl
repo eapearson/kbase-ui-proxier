@@ -39,7 +39,11 @@ http {
     {{ if .Env.local_narrative }}
       server narrative:8888;
     {{ else }}
+      {{ if .Env.deploy_ui_hostname }}
+      server {{ .Env.deploy_ui_hostname }}:443;
+      {{ else }}
       server {{ .Env.deploy_hostname }}:443;
+      {{ end }}
     {{ end }}
   }
 
@@ -63,7 +67,7 @@ http {
       listen 80 default_server;
       listen [::]:80 default_server;
       server_name {{ default .Env.deploy_ui_hostname .Env.deploy_hostname }};
-      return 301 https:/{{ default .Env.deploy_ui_hostname  .Env.deploy_hostname }}$request_uri;
+      return 301 https://{{ default .Env.deploy_ui_hostname  .Env.deploy_hostname }}$request_uri;
     }
 
     {{ if .Env.deploy_ui_hostname }}
