@@ -20,12 +20,12 @@ then
 fi
 
 root=$(git rev-parse --show-toplevel)
-config_mount="${root}/conf"
+config_mount="${root}/deploy-envs"
 image="kbase/kbase-ui-proxy:dev"
 
-if [ ! -e "${root}/conf/${environment}.env" ]
+if [ ! -e "${config_mount}/${environment}.env" ]
 then
-    echo "ERROR: environment (arg 1) does not resolve to a config file in ${root}/conf/${environment}.env"
+    echo "ERROR: environment (arg 1) does not resolve to a config file in ${config_mount}/${environment}.env"
     usage
     exit 1
 fi

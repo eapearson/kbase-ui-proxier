@@ -50,12 +50,12 @@ function build_image() {
     # images separate locally.
     tag="dev"
 
-    echo "Running docker build in context ${here}/docker/context"
+    echo "Running docker build in context ${root}"
     docker build --build-arg VCS_REF=$commit \
         --build-arg BRANCH=$branch \
         --build-arg TAG=$tag \
         -t kbase/kbase-ui-proxy:$tag \
-        ${root}/docker/context
+        ${root}
 
     err=$?
     if (( $err > 0 )); then
