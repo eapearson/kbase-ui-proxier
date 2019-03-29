@@ -7,7 +7,7 @@ echo "DATE: $date"
 # Note: SOURCE_COMMIT, SOURCE_BRANCH, DOCKERFILE_PATH, IMAGE_NAME are dockerhub env variables
 #       BUILD is a custom env variable provided in our build config
 docker build \
-    --build-arg BUILD_DATE=$date \  
+    --build-arg BUILD_DATE=$date \
     --build-arg VCS_REF=$SOURCE_COMMIT \
     --build-arg BRANCH=$SOURCE_BRANCH \
     -f $DOCKERFILE_PATH \
